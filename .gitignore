@@ -4,6 +4,7 @@
 
 sample_comment_files/
 ft-classifier/
+migrations/
 
 ### Django ###
 *.log
