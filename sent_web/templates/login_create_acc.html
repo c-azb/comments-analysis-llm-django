@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+  <!--Quick single review entry-->
+
+  <style>
+    .bg_form{
+      background-color: rgb(236, 236, 236);
+      border-radius: 1%;
+      padding: 2%;
+    }
+  </style>
+
+    <div class="container mt-3 mb-5">
+      <div class="row align-items-start">
+
+        <!--LOGIN-->
+        <div class="col m-2 bg_form">
+          <h3>LOGIN</h3>
+
+          <form action="" method="post">
+            {% csrf_token %}
+            <div class="form-group m-2">
+              {{ login_form.username_or_email.label_tag }}
+              {{ login_form.username_or_email }}
+            </div>
+            <div class="form-group m-2">
+              {{ login_form.password.label_tag }}
+              {{ login_form.password }}
+            </div>
+              <input type="submit" value="Login" class="btn btn-primary m-2">
+          </form>
+
+
+          {% if messages %}
+              {% for message in messages %}
+                <p style="color: red;">{{ message }}</p>
+              {% endfor %}
+          {% endif %}
+
+
+        </div>
+
+        <!--CREATE ACC-->
+        <div class="col m-2 bg_form">
+          <h3>CREATE ACCOUNT</h3>
+
+          <form action="" method="post">
+            {% csrf_token %}
+            <div class="form-group m-2">
+                  {{ registration_form.username.label_tag }}
+                  {{ registration_form.username }}
+                  {{ registration_form.username.errors }}
+            </div>
+            <div class="form-group m-2">
+                  {{ registration_form.email.label_tag }}
+                  {{ registration_form.email }}
+                  {{ registration_form.email.errors }}
+            </div>
+            <div class="form-group m-2">
+                  {{ registration_form.password1.label_tag }}
+                  {{ registration_form.password1 }}
+                  {{ registration_form.password1.errors }}
+            </div>
+            <div class="form-group m-2">
+                  {{ registration_form.password2.label_tag }}
+                  {{ registration_form.password2 }}
+                  {{ registration_form.password2.errors }}
+            </div>
+              
+            <input type="submit" value="Create Account" class="btn btn-primary m-2">
+
+          </form>
+        </div>
+
+      </div>
+      
+
+      
+    </div>
+
+
+
+
+
+
+
+
+
+{% endblock %}

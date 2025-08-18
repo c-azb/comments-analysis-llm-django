@@ -1,0 +1,53 @@
+
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<form class="d-flex m-5" method="get" action="">
+  <input name="search_text" class="form-control" type="text" placeholder="Search" aria-label="Search" style="width: 50%;">
+  <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search"></i></button>
+
+    <div class="form-group m-2">
+        <label class="form-check-label" for="flexCheckDefault">Only my work</label>
+    <input class="form-check-input" type="checkbox" name="only_my_work" id="flexCheckDefault">
+    </div>
+</form>
+
+
+
+{% if search_result %}
+  {% for res in search_result %}
+      <div class="card m-3" style="width: 50%;">
+        <div class="card-body">
+          <a href="{% url 'analysis_viwer' res.pk %}" class="link-body-emphasis link-offset-2 link-underline-opacity-25 link-underline-opacity-75-hover" 
+          style="font-weight: bold;">{{res.name_id}} {{res.pos_avg}}% positive
+          </a>
+          <h7 style="float: right; font-style: italic;">{{res.autor_id}} {{res.updated_at | timesince }} ago</h7>
+
+          
+  <!-- <script>
+    function getColorByPercentage(percent) {
+      percent = Math.max(0, Math.min(percent, 100));
+      const red = Math.floor(255 * (100 - percent) / 100);
+      const green = Math.floor(255 * percent / 100);
+      const blue = 0;
+      return `rgb(${red}, ${green}, ${blue})`;
+    }
+    const color = getColorByPercentage({{res.pos_avg}});
+    const display = document.getElementById("color-display");
+    display.style.color = color;
+  </script> -->
+
+          
+
+          
+        </div>
+      </div>
+
+
+  {% endfor %}
+{% endif %}
+
+
+{% endblock %}

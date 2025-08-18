@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="card m-3" style="background-color: rgb(240, 240, 240);" >
+<div class="card-body">
+    <div class="row align-items-start">
+        <div class="col-auto">
+            <h5 class="card-subtitle m-4" style="font-weight: bold;" id="name_id_text">{{res.name_id}} </h5>
+            <input type="text" id="name_id_input" class="form-control d-none m-4" style="width: 200px;">
+        </div>
+        <div class="col-auto">
+            <button id="editBtn" class="btn btn-sm mt-3"><i class="fas fa-edit"></i></button>
+        </div>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-4">
+            <h7 style="font-style: italic; float: right;">{{res.autor_id}} {{res.updated_at | timesince }} ago</h7>
+        </div>
+    </div>
+
+    <div class="row align-items-start ms-5">
+        <div class="col-auto">
+            <h6 class="card-subtitle m-2" style="color: green;" >Number of positive comments: {{res.pos_count}}</h6>
+        </div>
+        <div class="col-auto">
+            <h6 class="card-subtitle m-2" style="color: red;">Number of negative comments: {{res.neg_count}}</h6>
+        </div>
+        <div class="col-auto">
+            <h6 class="card-subtitle m-2" style="color: gray;">Number of neutral comments: {{res.neutral_count}}</h6>
+        </div>
+    </div>
+
+    <h5 class="m-4">Comments Summary</h5>
+    <p class="ms-2">{{res.overall_description}}</p>
+
+    {% if res.autor_id == user %}
+    <a href="{% url 'delete_analysis' res.pk %}" class="btn btn-danger m-1" style="float: right;">Delete</a>
+    
+    <form id="hiddenForm" action="{% url 'update' res.pk %}" method="POST" style="display: none;">
+        {% csrf_token %}
+        <input type="hidden" name="name" />
+        <input type="hidden" name="is_public" />
+    </form>
+
+    <button onclick="submitAll()" class="btn btn-primary m-1" style="float: right;">Update</button>
+    <div class="m-1">
+        <label for="is_public" class="form-check-label">Is Public</label>
+        <input type="checkbox" id="is_public" class="form-check-input" {% if res.is_public %} checked {% endif %} >
+    </div>
+
+
+    <script>
+        const titleText = document.getElementById('name_id_text');
+        const titleInput = document.getElementById('name_id_input');
+        const editBtn = document.getElementById('editBtn');
+        function submitAll() {
+            const form = document.getElementById('hiddenForm');
+            if (titleInput.classList.contains('d-none')) 
+                form.elements['name'].value = titleText.textContent;
+            else
+                form.elements['name'].value = titleInput.value;
+            form.elements['is_public'].value = document.getElementById('is_public').checked;
+            form.submit();
+        }
+
+        editBtn.addEventListener('click', () => {
+        if (titleInput.classList.contains('d-none')) {
+            titleInput.value = titleText.textContent;
+            titleText.classList.add('d-none');
+            titleInput.classList.remove('d-none');
+            editBtn.classList.add('d-none')
+        }
+        });
+    </script>
+
+    {% endif %}
+</div>
+</div>
+
+  
+
+{% endblock %}

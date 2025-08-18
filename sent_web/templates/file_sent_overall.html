@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+    {% block content %}
+  <!--Quick single review entry-->
+
+
+
+    <div class="m-5">
+      <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="row align-items-center">
+          <!--Name input-->
+          <div class="col-auto">
+            {{form.name_id.label|safe}}
+          </div>
+          <div class="col-sm-6">
+            {{form.name_id}}
+          </div>
+          <!--Checkbox-->
+          <div class="col-auto">
+            {{form.is_public.label|safe}}
+            {{form.is_public}}
+          </div>
+        </div>
+        <div class="form-group m-2">
+          {{form.input_file}}
+        </div>
+        <input type="submit" value="Submit" class="btn btn-primary m-2">
+      </form>
+
+      {% if messages %}
+        {% for message in messages %}
+          <p style="color: red;">{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+
+
+      <!--Quick single review result-->
+      {% if res_stats %}
+      <div class="card m-3" style="width: 50%;">
+        <div class="card-body">
+          <h5 class="card-title" style="font-weight: bold;">Overall results for {{idendity_name}}</h5>
+          <h6 class="card-subtitle m-2" style="color: green;" >Number of positive comments: {{res_stats.Positive}}</h6>
+          <h6 class="card-subtitle m-2" style="color: red;">Number of negative comments: {{res_stats.Negative}}</h6>
+          <h6 class="card-subtitle m-2" style="color: gray;">Number of neutral comments: {{res_stats.Neutral}}</h6>
+          <h6 class="card-subtitle m-2" style="font-weight: bold;">Total: {{res_stats.Total}}</h6>
+          <h6 class="card-subtitle m-2" style="font-weight: bold;">Comments summaries</h6>
+          <h6 class="card-subtitle m-3">{{overall_description}}</h6>
+        </div>
+      </div>
+
+      {% endif %}
+
+      {% if individual_res %}
+        {% for res in individual_res %}
+          {% if forloop.counter < 5 %}
+          <div class="card" style="margin: 1%; margin-left: 5%; width: 30%;">
+            <div class="card-body">
+              <h6 class="card-title" style="font-weight: bold;">Sentence {{ forloop.counter }}</h6>
+              <h6 class="card-subtitle m-1">{{res.sentence}}</h6>
+              <div style="float: right;">
+              {% if res.label == 'Positive' %}
+              <h6 class="card-subtitle m-1"  style="color: green;" >{{res.label}}</h6>
+              {% elif res.label == 'Negative' %}
+              <h6 class="card-subtitle m-1"  style="color: red;" >{{res.label}}</h6>
+              {% elif res.label ==  'Neutral' %}
+              <h6 class="card-subtitle m-1"  style="color: gray;" >{{res.label}}</h6>
+              {% endif %}
+              </div>
+            </div>
+          </div>
+          {% elif forloop.last %}
+          <p>Hiding output for other entries...</p>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+
+
+
+      <!-- {% if error_msgs %}
+      <div>
+        {% for error_msg in error_msgs  %}
+        <p style="color: red;font-weight: bolder;">{{error_msg}}</p>
+        {% endfor %}
+      </div>
+      {% endif %} -->
+    </div>
+
+
+{% endblock %}
