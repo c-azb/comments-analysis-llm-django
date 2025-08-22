@@ -44,14 +44,16 @@ class RegistrationForm(UserCreationForm):
         invalid_characters = re.findall('[^a-zA-Z ]',username)
         if len(invalid_characters) > 0:
             raise forms.ValidationError(f"Invalid characters: {invalid_characters}")
-        if re.match('[a-zA-Z ]{3,15}',username).string != username:
+        match_ = re.match('[a-zA-Z ]{3,15}',username)
+        if match_ == None or match_.group(0) != username:
              raise forms.ValidationError("Invalid username.")
         return username
     
     def clean_password1(self):
         #removed from AUTH_PASSWORD_VALIDATORS in settings.py for simplification and flexibility
         psw1 = self.cleaned_data.get('password1')
-        if re.match('[\w\d\s!@#$%&*()]{3,15}',psw1).string != psw1:
+        match_ = re.match('[\w\d\s!@#$%&*()]{3,15}',psw1)
+        if match_ == None or match_.group(0) != psw1:
             raise forms.ValidationError("Invalid password")
         return psw1
     

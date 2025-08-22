@@ -25,7 +25,8 @@ class OverallSentimentForm(forms.ModelForm):
 
     @staticmethod
     def is_name_id_valid(x):
-        return re.match('[\w\d\' ]{3,}',x).string == x
+        match_ = re.match('[\w\d\' ]{3,}',x)
+        return match_.group(0) == x if match_ else False
     
     def clean_name_id(self):
         cleaned_data = self.cleaned_data.get('name_id')
