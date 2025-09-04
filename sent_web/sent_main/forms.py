@@ -41,10 +41,10 @@ class RegistrationForm(UserCreationForm):
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
-        invalid_characters = re.findall('[^a-zA-Z ]',username)
+        invalid_characters = re.findall('[^\w ]',username)
         if len(invalid_characters) > 0:
             raise forms.ValidationError(f"Invalid characters: {invalid_characters}")
-        match_ = re.match('[a-zA-Z ]{3,15}',username)
+        match_ = re.match('[\w ]{3,15}',username)
         if match_ == None or match_.group(0) != username:
              raise forms.ValidationError("Invalid username.")
         return username

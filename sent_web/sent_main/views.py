@@ -44,7 +44,11 @@ def login_create_acc(request):
         if 'password2' in request.POST:
             registration_form = RegistrationForm(request.POST)
             if registration_form.is_valid():
-                registration_form.save()
+                #registration_form.save()
+                user_ = registration_form.save(commit=False)
+                user_.set_password(registration_form.cleaned_data['password1'])
+                user_.save()
+
                 username=registration_form.cleaned_data['username']
                 password=registration_form.cleaned_data['password1']
                 user = auth.authenticate(request, username=username, password=password)
